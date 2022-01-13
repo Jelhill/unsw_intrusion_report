@@ -25,3 +25,25 @@ CREATE TABLE IF NOT EXIST unsw(
 	LOCATION "/tmp/dataset/"; -- specify location of data that will be loaded into the table
 
 
+
+
+CREATE TABLE clean_table as SELECT attack_cat FROM unsw;
+
+
+
+SELECT attack_cat,
+count(*) as count from clean_table
+WHERE attack_cat != "None"
+GROUP BY attack_cat
+ORDER BY 2
+DESC
+
+
+CREATE TABLE service_unsw 
+as SELECT IF(service == "-", regexp_replace(service, "-", "unused"), service) from unsw;
+
+
+SELECT service, 
+count(*) as frequency from service_unsw WHERE service != "unused" 
+GROUP BY service ORDER BY 2 DESC LIMIT 5
+
